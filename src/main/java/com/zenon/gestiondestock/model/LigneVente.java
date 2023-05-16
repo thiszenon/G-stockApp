@@ -1,17 +1,15 @@
 package com.zenon.gestiondestock.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "LigneVente")
 public class LigneVente extends AbstractEntity{
@@ -22,4 +20,8 @@ public class LigneVente extends AbstractEntity{
 
     @Column(name = "quantity")
     private BigDecimal quantity;
+
+
+    @Column(name = "prixUnitaire")
+    private BigDecimal prixUnitaire;
 }

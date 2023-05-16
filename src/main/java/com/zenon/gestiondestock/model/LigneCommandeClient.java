@@ -1,18 +1,15 @@
 package com.zenon.gestiondestock.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "LigneCommandeClient")
 public class LigneCommandeClient extends  AbstractEntity{
@@ -24,4 +21,10 @@ public class LigneCommandeClient extends  AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "idCommandeClient")
     private CommandeClient commandeClient;
+
+    @Column(name = "quantity")
+    private BigDecimal quantity;
+
+    @Column(name = "prixUnitaire")
+    private BigDecimal prixUnitaire;
 }
