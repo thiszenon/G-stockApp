@@ -24,7 +24,6 @@ public class ArticleDto {
     private BigDecimal prixUnitaireTtc;
     private String photo;
 
-    @JsonIgnore
     private CategoryDto categorydto;
 
 //Mapper Article -->ArticleDto
@@ -41,6 +40,7 @@ public class ArticleDto {
                 .prixUnitaire(article.getPrixUnitaire())
                 .prixUnitaireTtc(article.getPrixUnitaireTtc())
                 .tauxTva(article.getTauxTva())
+                .categorydto(CategoryDto.fromEntity(article.getCategory()))
                 .build();
     }
 
@@ -59,6 +59,7 @@ public class ArticleDto {
         article.setPrixUnitaire(articleDto.getPrixUnitaire());
         article.setPrixUnitaireTtc(articleDto.getPrixUnitaireTtc());
         article.setTauxTva(articleDto.getTauxTva());
+        article.setCategory(CategoryDto.toEntity(articleDto.getCategorydto()));// a revoir en cas d'erreur
         return article;
     }
 

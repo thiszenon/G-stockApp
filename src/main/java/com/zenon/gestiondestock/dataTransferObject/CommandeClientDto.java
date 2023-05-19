@@ -26,11 +26,11 @@ public class CommandeClientDto {
     private Instant dateCommande;
 
 
-    @JsonIgnore
+
     private ClientDto client;
 
     @JsonIgnore
-    private List<LigneCommandeClientDto> ligneCommandeClient;
+    private List<LigneCommandeClientDto> ligneCommandeClient;// a implementer
 
 //MAPPER CommandeClient --->CommandeClientDto
     public static CommandeClientDto fromEntity(CommandeClient commandeClient){
@@ -42,6 +42,7 @@ public class CommandeClientDto {
                 .id(commandeClient.getId())
                 .code(commandeClient.getCode())
                 .dateCommande(commandeClient.getDateCommande())
+                .client(ClientDto.fromEntity(commandeClient.getClient()))
                 .build();
     }
 //MAPPER CommandeClientDto -->CommandeClient
@@ -54,6 +55,8 @@ public class CommandeClientDto {
         client.setId(commandeClientDto.getId());
         client.setCode(commandeClientDto.getCode());
         client.setDateCommande(commandeClientDto.getDateCommande());
+        client.setClient(ClientDto.toEntity(commandeClientDto.getClient()));
+        //MANQUE UNE EXPRESSION
         return client;
     }
 }

@@ -78,7 +78,10 @@ public class UtilisateurDto {
         utilisateur.setPhoto(utilisateurDto.getPhoto());
         utilisateur.setAdresse(AdresseDto.toEntity(utilisateurDto.getAdresse()));
         utilisateur.setEntreprise(EntrepriseDto.toEntity(utilisateurDto.getEntreprise()));
-        //utilisateur.setRoleUtilisateurs(RoleUtilisateurDto.toEntity(utilisateurDto.getRoleUtilisateurs()));
+        List<RoleUtilisateur> roleUtilisateurList= utilisateurDto.getRoleUtilisateurs().stream()
+                .map(RoleUtilisateurDto::toEntity)
+                .collect(Collectors.toList());
+        utilisateur.setRoleUtilisateurs(roleUtilisateurList);
 
         return utilisateur;
     }//toEntity

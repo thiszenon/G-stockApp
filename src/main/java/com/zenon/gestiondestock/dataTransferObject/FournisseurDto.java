@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -24,7 +25,7 @@ public class FournisseurDto {
 
     private String prenomFournisseur;
 
-    @JsonIgnore
+
     private AdresseDto adresse;
     private String photo;
 
@@ -32,7 +33,7 @@ public class FournisseurDto {
     private String numTel;
 
 
-    @JsonIgnore
+
     private List<CommandeFournisseurDto> commandeFournisseurs;
 
 //Mapped Fournisseur --->FournisseurDto
@@ -48,6 +49,12 @@ public class FournisseurDto {
                 .email(fournisseur.getEmail())
                 .numTel(fournisseur.getNumTel())
                 .photo(fournisseur.getPhoto())
+                .adresse(AdresseDto.fromEntity(fournisseur.getAdresse()))
+                .commandeFournisseurs(fournisseur.getCommandeFournisseurs() != null?
+                        fournisseur.getCommandeFournisseurs().stream()
+                                .map(CommandeFournisseurDto::fromEntity)
+                                .collect(Collectors.toList()): null
+                )
                 .build();
     }
 
@@ -63,6 +70,11 @@ public class FournisseurDto {
         fournisseur.setEmail(fournisseurDto.getEmail());
         fournisseur.setNumTel(fournisseurDto.getNumTel());
         fournisseur.setPhoto(fournisseurDto.getPhoto());
+        fournisseur.setAdresse(AdresseDto.toEntity(fournisseurDto.getAdresse()));
+        List<CommandeFournisseur> commandeFournisseurList= fournisseurDto.getCommandeFournisseurs().stream()
+                .map(CommandeFournisseurDto::toEntity)
+                .collect(Collectors.toList());
+        fournisseur.setCommandeFournisseurs(commandeFournisseurList);
         return fournisseur;
     }
 }

@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ public class CategoryDto {
 
     private  String code;
     private String designation;
-    @JsonIgnore
+
     private List<ArticleDto> articles;
 
     // Constructeur qui nous renvoi nos objets
@@ -36,6 +37,12 @@ public class CategoryDto {
                 .id(category.getId())
                 .code(category.getCode())
                 .designation(category.getDesignation())
+                .articles(
+                        category.getArticles() !=null ?
+                        category.getArticles().stream()
+                                .map(ArticleDto::fromEntity)
+                                .collect(Collectors.toList()): null
+                )
                 .build();
 
     }// fromEntity
@@ -51,6 +58,9 @@ public class CategoryDto {
         category.setId(categoryDto.getId());
         category.setCode(categoryDto.getCode());
         category.setDesignation(categoryDto.getDesignation());
+        List<Article> articleList= categoryDto.getArticles().stream()
+                .map(ArticleDto::toEntity).collect(Collectors.toList());
+        category.setArticles(articleList);
 
         return category;
 
