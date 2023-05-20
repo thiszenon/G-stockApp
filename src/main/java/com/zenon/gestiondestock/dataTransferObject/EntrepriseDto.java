@@ -10,7 +10,9 @@ import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -23,7 +25,7 @@ public class EntrepriseDto {
 
     private String description;
 
-    @JsonIgnore
+
     private AdresseDto adresse;
 
     private String codeFiscal;
@@ -36,7 +38,7 @@ public class EntrepriseDto {
 
     private String siteWeb;
 
-    @JsonIgnore
+
     private List<UtilisateurDto> utilisateurs;
 
 //MAPPER Entreprise --> EntrepriseDto
@@ -54,6 +56,12 @@ public class EntrepriseDto {
                 .description(entreprise.getDescription())
                 .photo(entreprise.getPhoto())
                 .siteWeb(entreprise.getSiteWeb())
+                .adresse(AdresseDto.fromEntity(entreprise.getAdresse()))
+                .utilisateurs(entreprise.getUtilisateurs()!=null ?
+                        entreprise.getUtilisateurs().stream()
+                                .map(UtilisateurDto::fromEntity)
+                                .collect(Collectors.toList()) : null
+                )
                 .build();
     }
 //MAPPEED EntrepriseDto ---> Entreprise
@@ -72,6 +80,10 @@ public class EntrepriseDto {
         entreprise.setDescription(entrepriseDto.getDescription());
         entreprise.setPhoto(entrepriseDto.getPhoto());
         entreprise.setSiteWeb(entrepriseDto.getSiteWeb());
+        entreprise.setAdresse(AdresseDto.toEntity(entrepriseDto.getAdresse()));
+        List<Utilisateur> utilisateurList= entrepriseDto.getUtilisateurs().stream()
+                .map(UtilisateurDto::toEntity).collect(Collectors.toList());
+        entreprise.setUtilisateurs(utilisateurList);
         return entreprise;
     }
 }

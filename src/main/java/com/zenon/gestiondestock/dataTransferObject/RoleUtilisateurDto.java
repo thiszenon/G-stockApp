@@ -17,7 +17,7 @@ public class RoleUtilisateurDto {
     private Integer id;
 
     private String roleName;
-    @JsonIgnore
+
     private UtilisateurDto utilisateur;
 
     public static RoleUtilisateurDto fromEntity(RoleUtilisateur roleUtilisateur){
@@ -27,6 +27,7 @@ public class RoleUtilisateurDto {
         return RoleUtilisateurDto.builder()
                 .id(roleUtilisateur.getId())
                 .roleName(roleUtilisateur.getRoleName())
+                .utilisateur(UtilisateurDto.fromEntity(roleUtilisateur.getUtilisateur()))
                 .build();
 
     }//fromEntity
@@ -38,6 +39,7 @@ public class RoleUtilisateurDto {
         RoleUtilisateur roleUtilisateur = new RoleUtilisateur();
         roleUtilisateur.setId(roleUtilisateurDto.getId());
         roleUtilisateur.setRoleName((roleUtilisateurDto.getRoleName()));
+        roleUtilisateur.setUtilisateur(UtilisateurDto.toEntity(roleUtilisateurDto.getUtilisateur()));
         return roleUtilisateur;
     }//toEntity
 }

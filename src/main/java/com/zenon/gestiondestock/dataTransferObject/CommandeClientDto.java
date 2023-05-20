@@ -14,6 +14,7 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -29,7 +30,7 @@ public class CommandeClientDto {
 
     private ClientDto client;
 
-    @JsonIgnore
+
     private List<LigneCommandeClientDto> ligneCommandeClient;// a implementer
 
 //MAPPER CommandeClient --->CommandeClientDto
@@ -43,6 +44,11 @@ public class CommandeClientDto {
                 .code(commandeClient.getCode())
                 .dateCommande(commandeClient.getDateCommande())
                 .client(ClientDto.fromEntity(commandeClient.getClient()))
+                .ligneCommandeClient(commandeClient.getLigneCommandeClient()!=null?
+                        commandeClient.getLigneCommandeClient().stream()
+                                .map(LigneCommandeClientDto::fromEntity)
+                                .collect(Collectors.toList()) : null
+                )
                 .build();
     }
 //MAPPER CommandeClientDto -->CommandeClient
@@ -56,7 +62,10 @@ public class CommandeClientDto {
         client.setCode(commandeClientDto.getCode());
         client.setDateCommande(commandeClientDto.getDateCommande());
         client.setClient(ClientDto.toEntity(commandeClientDto.getClient()));
-        //MANQUE UNE EXPRESSION
+        List<LigneCommandeClient> ligneCommandeClientList= commandeClientDto.getLigneCommandeClient().stream()
+                .map(LigneCommandeClientDto::toEntity)
+                .collect(Collectors.toList());
+        client.setLigneCommandeClient(ligneCommandeClientList);
         return client;
     }
 }
